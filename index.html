@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coastal Chronicle</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+
+    header {
+      background: #c40000;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .top-banner {
+      width: 100%;
+      height: 350px;
+      background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1300&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      color: white;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .top-banner h2 {
+      font-size: 35px;
+      max-width: 700px;
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      padding: 15px;
+      font-size: 19px;
+    }
+
+    /* language selector */
+    .language-selector {
+      margin-right: 20px;
+    }
+
+    footer {
+      margin-top: 50px;
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Article popup */
+    #articlePopup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #articleBox {
+      background: white;
+      max-width: 800px;
+      width: 100%;
+      padding: 25px;
+      border-radius: 10px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1 id="title">Coastal Chronicle</h1>
+
+  <div class="language-selector">
+    <select id="lang" onchange="changeLang()">
+      <option value="en">English</option>
+      <option value="fa">فارسی</option>
+      <option value="ru">Русский</option>
+      <option value="id">Bahasa Indonesia</option>
+    </select>
+  </div>
+</header>
+
+<div class="top-banner" onclick="openArticle(0)">
+  <h2 id="bannerText">
+    Tragic mystery at Sadana Pool resurfaces after new EMF spikes reported
+  </h2>
+</div>
+
+<div class="container">
+
+  <h2 id="latestNews">Latest News</h2>
+
+  <div class="news-grid">
+
+    <div class="card" onclick="openArticle(0)">
+      <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?auto=format&fit=crop&w=900&q=80" />
+      <h3 id="card1">Ghostly figure reported near Sadana Pool construction rails</h3>
+    </div>
+
+    <div class="card" onclick="openArticle(1)">
+      <img src="https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&w=900&q=80" />
+      <h3 id="card2">Canadian hikers claim “woman in white” followed them for 2km</h3>
+    </div>
+
+    <div class="card" onclick="openArticle(2)">
+      <img src="https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&w=900&q=80" />
+      <h3 id="card3">Tehran apartment residents hear knocking inside empty walls</h3>
+    </div>
+
+  </div>
+</div>
+
+<!-- ARTICLE POPUP -->
+
+<div id="articlePopup">
+  <div id="articleBox">
+    <h2 id="articleTitle"></h2>
+    <p id="articleBody"></p>
+    <button onclick="closeArticle()">Close</button>
+  </div>
+</div>
+
+<footer>
+  Coastal Chronicle © 2025 — All rights reserved
+</footer>
+
+<script>
+  const articles = [
+    {
+      title: {
+        en: "The Sadana Pool Tragedy Returns",
+        fa: "تراژدی استخر سادانا دوباره بازمی‌گردد",
+        ru: "Трагедия бассейна Садана возвращается",
+        id: "Tragedi Kolam Sadana Kembali"
+      },
+      body: {
+        en: "During the early construction of Ciputra Beach Resort, a young woman named Lena Marrow drowned under mysterious circumstances near the metal rails that still stand today. Residents now report EMF spikes and sightings around the same location...",
+        fa: "در اوایل ساخت‌وساز مجموعه ساحلی چیپوترا، زن جوانی به نام لنا مرو در شرایطی مرموز نزدیک همان نرده‌های فلزی که هنوز هم وجود دارند غرق شد… اکنون ساکنان گزارش افزایش EMF و دیده‌شدن سایه‌هایی را در همان محل می‌دهند…",
+        ru: "Во время строительства курорта Ципутра молодая женщина по имени Лена Марро утонула при загадочных обстоятельствах возле тех же металлических ограждений…",
+        id: "Selama pembangunan awal Ciputra Beach Resort, seorang wanita muda bernama Lena Marrow tenggelam secara misterius dekat pagar logam…"
+      }
+    },
+    {
+      title: {
+        en: "Woman in white follows Canadian hikers",
+        fa: "زن سفیدپوش دنبال‌کنندهٔ کوهنوردان کانادایی",
+        ru: "Женщина в белом преследует канадских туристов",
+        id: "Wanita berbaju putih mengikuti pendaki Kanada"
+      },
+      body: {
+        en: "Two hikers reported being followed by a pale woman with soaked clothing...",
+        fa: "دو کوهنورد گزارش دادند که توسط زنی رنگ‌پریده با لباس‌های خیس دنبال شده‌اند…",
+        ru: "Два путешественника сообщили, что за ними следовала бледная женщина в мокрой одежде…",
+        id: "Dua pendaki melaporkan diikuti oleh wanita pucat dengan pakaian basah…"
+      }
+    },
+    {
+      title: {
+        en: "Strange knocking heard in Tehran",
+        fa: "صدای کوبیدن عجیب در تهران",
+        ru: "Странный стук слышен в Тегеране",
+        id: "Ketukan aneh terdengar di Teheran"
+      },
+      body: {
+        en: "Residents of a northern Tehran apartment hear knocking inside the walls late at night...",
+        fa: "ساکنان آپارتمانی در شمال تهران شب‌ها صدای کوبیدن از داخل دیوارها می‌شنوند…",
+        ru: "Жители квартиры на севере Тегерана слышат стук внутри стен…",
+        id: "Penghuni apartemen di Teheran mendengar ketukan dari dalam dinding…"
+      }
+    }
+  ];
+
+  function openArticle(i) {
+    document.getElementById("articleTitle").innerText = articles[i].title[currentLang];
+    document.getElementById("articleBody").innerText = articles[i].body[currentLang];
+    document.getElementById("articlePopup").style.display = "flex";
+  }
+
+  function closeArticle() {
+    document.getElementById("articlePopup").style.display = "none";
+  }
+
+  let currentLang = "en";
+
+  const translateElements = {
+    title: { en: "Coastal Chronicle", fa: "کرانیکل ساحلی", ru: "Прибрежный Хроникл", id: "Kronik Pantai" },
+    latestNews: { en: "Latest News", fa: "آخرین خبرها", ru: "Последние Новости", id: "Berita Terbaru" },
+    bannerText: {
+      en:"Tragic mystery at Sadana Pool resurfaces after new EMF spikes",
+      fa:"راز تراژیک استخر سادانا دوباره زنده شد پس از افزایش EMF",
+      ru:"Трагедия бассейна Садана вновь всплывает после скачков EMF",
+      id:"Tragedi kolam Sadana muncul kembali setelah lonjakan EMF"
+    },
+    card1: {
+      en:"Ghostly figure reported near Sadana Pool rails",
+      fa:"سایه‌ای شبح‌وار کنار نرده‌های استخر دیده شد",
+      ru:"Призрачная фигура у ограждений бассейна Садана",
+      id:"Sosok hantu terlihat dekat pagar kolam Sadana"
+    },
+    card2: {
+      en:"Woman in white follows Canadian hikers",
+      fa:"زن سفید پوش کوهنوردان کانادایی را دنبال کرد",
+      ru:"Женщина в белом преследует туристов",
+      id:"Wanita berbaju putih mengikuti pendaki"
+    },
+    card3: {
+      en:"Strange knocking inside Tehran walls",
+      fa:"کوبیدن عجیب در دیوارهای تهران",
+      ru:"Странный стук в стенах",
+      id:"Ketukan aneh dalam dinding Teheran"
+    }
+  };
+
+  function changeLang() {
+    currentLang = document.getElementById("lang").value;
+
+    for (let id in translateElements) {
+      document.getElementById(id).innerText = translateElements[id][currentLang];
+    }
+  }
+</script>
+
+</body>
+</html>
